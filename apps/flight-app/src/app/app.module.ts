@@ -1,3 +1,4 @@
+import { ReactiveFormsModule } from '@angular/forms';
 import { FlightCancellingModule } from './flight-booking/flight-cancelling/flight-cancelling.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -14,6 +15,7 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SharedModule } from './shared/shared.module';
 import { SidebarComponent } from './sidebar/sidebar.component';
+import { FlightLookaheadComponent } from './flight-lookahead/flight-lookahead.component';
 
 @NgModule({
   imports: [
@@ -27,15 +29,17 @@ import { SidebarComponent } from './sidebar/sidebar.component';
     FlightLibModule.forRoot(),
     SharedModule.forRoot(),
     RouterModule.forRoot(APP_ROUTES),
+    ReactiveFormsModule,
   ],
   declarations: [
     AppComponent,
     SidebarComponent,
     NavbarComponent,
     HomeComponent,
-    BasketComponent
+    BasketComponent,
+    FlightLookaheadComponent,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
