@@ -2,12 +2,15 @@ import { Component } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Flight, FlightService } from '@flight-workspace/flight-lib';
 import {
+  catchError,
   combineLatest,
+  concat,
   filter,
   Observable,
   of,
   pairwise,
   pluck,
+  retry,
   shareReplay,
   switchMap,
 } from 'rxjs';
@@ -27,7 +30,7 @@ function isNotUndefined<T>(obj: T | undefined): asserts obj is T {
 export class FlightLookaheadComponent {
   loading = false;
 
-  flights$: Observable<Flight[]>;
+  data$: Observable<{ flights: Flight[]; loading: boolean; hasError: boolean }>;
   diff$: Observable<number>;
   control = new FormControl();
 
@@ -46,13 +49,24 @@ export class FlightLookaheadComponent {
       // distinctUntilChanged()
       ();
 
-    this.flights$ = combineLatest([input$, this.online$]).pipe(
+    this.data$ = combineLatest([input$, this.online$]).pipe(
       filter(([, online]) => online),
-      switchMap(([input]) => this.flightService.find(input, '')),
+      switchMap(([input]) =>
+        concat(
+          of({ flights: [], loading: true, hasError: false }),
+          this.flightService.find(input, '').pipe(
+            map((flights) => ({ flights, loading: false, hasError: false })),
+            catchError(() =>
+              of({ flights: [], loading: false, hasError: true })
+            )
+          )
+        )
+      ),
       shareReplay()
     );
 
-    this.diff$ = this.flights$.pipe(
+    this.diff$ = this.data$.pipe(
+      pluck('flights'),
       pairwise(),
       map(([flights1, flights2]) => flights1.length - flights2.length)
     );

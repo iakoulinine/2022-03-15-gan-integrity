@@ -14,9 +14,9 @@
     <div>Online: {{online$ | async}}</div>
   </div>
 
-  <table class="table table-striped" *ngIf="flights$ | async as flights">
-    <ng-container *ngIf="flights; else loading">
-    <tr *ngFor="let f of flights">
+  <table class="table table-striped" *ngIf="data$ | async as data">
+    <ng-container *ngIf="!data.loading; else loading">
+    <tr *ngFor="let f of data.flights">
       <td>{{f.id}}</td>
       <td>{{f.from}}</td>
       <td>{{f.to}}</td>

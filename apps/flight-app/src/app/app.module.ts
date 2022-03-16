@@ -1,8 +1,9 @@
 import { ReactiveFormsModule } from '@angular/forms';
+import { DefaultErrorHandler } from './default-error-handler';
 import { FlightCancellingModule } from './flight-booking/flight-cancelling/flight-cancelling.module';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { NgModule } from '@angular/core';
+import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FlightLibModule } from '@flight-workspace/flight-lib';
@@ -39,7 +40,7 @@ import { FlightLookaheadComponent } from './flight-lookahead/flight-lookahead.co
     BasketComponent,
     FlightLookaheadComponent,
   ],
-  providers: [],
+  providers: [{ provide: ErrorHandler, useClass: DefaultErrorHandler }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
