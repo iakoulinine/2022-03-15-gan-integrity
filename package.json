@@ -35,6 +35,8 @@
     "@nrwl/angular": "13.8.5",
     "@swimlane/ngx-charts": "^20.1.0",
     "angular-oauth2-oidc": "^13.0.1",
+    "immer": "^9.0.12",
+    "ngrx-immer": "^2.0.0",
     "rxjs": "~7.4.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.4"

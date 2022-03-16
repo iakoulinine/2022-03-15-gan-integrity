@@ -1,0 +1,44 @@
+import { Injectable } from '@angular/core';
+import { Flight, FlightService } from '@flight-workspace/flight-lib';
+import { createStore } from '@ngneat/elf';
+import { devTools } from '@ngneat/elf-devtools';
+import {
+  selectAllEntities,
+  setEntities,
+  withEntities,
+} from '@ngneat/elf-entities';
+import {
+  createRequestsStatusOperator,
+  updateRequestStatus,
+  withRequestsStatus,
+} from '@ngneat/elf-requests';
+
+const flightsStore = createStore(
+  { name: 'flights' },
+  withEntities<Flight>(),
+  withRequestsStatus<`flights`>()
+);
+
+const trackRequestStatus = createRequestsStatusOperator(flightsStore);
+// devTools();
+
+@Injectable({ providedIn: 'root' })
+export class FlightRepository {
+  constructor(private flightService: FlightService) {}
+  getFlights() {
+    return flightsStore.pipe(selectAllEntities());
+  }
+
+  loadFlights(from: string, to: string) {
+    // flightsStore.update(updateRequestStatus('flights', 'pending'));
+    this.flightService
+      .find(from, to)
+      .pipe(trackRequestStatus('flights'))
+      .subscribe((flights) => {
+        flightsStore.update(
+          setEntities(flights),
+          updateRequestStatus('flights', 'success')
+        );
+      });
+  }
+}

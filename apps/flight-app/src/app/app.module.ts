@@ -1,4 +1,13 @@
 import { ReactiveFormsModule } from '@angular/forms';
+import { EffectsModule } from '@ngrx/effects';
+import {
+  createAction,
+  createReducer,
+  on,
+  props,
+  StoreModule,
+} from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { DefaultErrorHandler } from './default-error-handler';
 import { FlightCancellingModule } from './flight-booking/flight-cancelling/flight-cancelling.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -6,7 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ErrorHandler, NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { FlightLibModule } from '@flight-workspace/flight-lib';
+import { Flight } from '@flight-workspace/flight-lib';
 
 import { AppComponent } from './app.component';
 import { APP_ROUTES } from './app.routes';
@@ -27,10 +36,12 @@ import { FlightLookaheadComponent } from './flight-lookahead/flight-lookahead.co
     BrowserAnimationsModule,
     FlightCancellingModule,
 
-    FlightLibModule.forRoot(),
     SharedModule.forRoot(),
     RouterModule.forRoot(APP_ROUTES),
     ReactiveFormsModule,
+    StoreModule.forRoot({}),
+    EffectsModule.forRoot([]),
+    StoreDevtoolsModule.instrument(),
   ],
   declarations: [
     AppComponent,

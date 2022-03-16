@@ -18,6 +18,10 @@
         Remove
       </button>
 
+      <button class="btn btn-default"  (click)="delay.emit(item.id)">
+        Delay
+      </button>
+
       <a
         class="btn btn-default"
         [routerLink]="['../flight-edit', item.id, { showDetails: true }]"

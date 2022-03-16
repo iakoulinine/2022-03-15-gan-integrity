@@ -24,6 +24,7 @@ export class FlightCardComponent implements OnInit, OnChanges, OnDestroy {
   @Input() item: Flight | undefined;
   @Input() selected: boolean | undefined;
   @Output() selectedChange = new EventEmitter<boolean>();
+  @Output() delay = new EventEmitter<number>();
 
   constructor(private element: ElementRef, private zone: NgZone) {}
 
